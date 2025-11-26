@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
+import CategoriesManager from './pages/CategoriesManager';
+import ProductsManager from './pages/ProductManager';
 
 function App() {
   return (
@@ -12,6 +14,10 @@ function App() {
         {/* esta ruta tendria que ir privada */}
         <Route path="/dashboard" element={<DashboardPage />} />
 
+        {/* ruta para la gestión de categorias */}
+        <Route path="/category" element={<CategoriesManager />} />
+        {/* ruta para la gestión de prodcutos */}
+        <Route path="/products" element={<ProductsManager />} />
         {/* link default te redirecciona a login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
