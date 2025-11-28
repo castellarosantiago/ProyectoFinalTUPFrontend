@@ -43,28 +43,26 @@ export default function Dashboard() {
     );
   }
 
-  const roleColor = dummyUser.role === "Admin" ? "badge-secondary" : "badge-info";
-
   return (
     <div className="max-w-6xl w-full">
       
       <div className="card shadow-xl bg-base-200 p-8">
         <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold text-primary">
+          <h1 className="text-3xl font-bold text-primary">
             ¡Hola, {dummyUser.name}!
           </h1>
-          <div className={`badge ${roleColor} text-white text-lg p-3 font-semibold`}>
+          <div className={`badge text-base-content/70 text-sm p-3 font-semibold border-base-content/20 bg-base-100/30`}>
             Modo {dummyUser.role}
           </div>
         </div>
-        <p className="text-2xl italic mt-4 text-base-content/80">
+        <p className="text-xl italic mt-4 text-base-content/80">
             Tu negocio, bajo control. Un stock ordenado es sinónimo de rentabilidad.
         </p>
       </div>
       
       <div className="card shadow-lg bg-success text-success-content p-6 flex flex-row items-center justify-between">
         <div className="flex items-center">
-            <span className="text-4xl mr-4">💰</span>
+            <span className="text-4xl mr-4">$</span>
             <div className="text-lg">
                 <p className="font-semibold">Ventas Registradas en los ultimos 7 días:</p>
                 {salesCount === -1 ? (

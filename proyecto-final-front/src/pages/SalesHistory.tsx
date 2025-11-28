@@ -158,7 +158,7 @@ export default function SalesHistory() {
                 <th>Fecha/Hora</th>
                 <th className="text-right">Total</th>
                 <th className="text-center">Artículos</th>
-                <th>Vendedor (ID)</th>
+                <th>Vendedor</th>
               </tr>
             </thead>
             <tbody>
