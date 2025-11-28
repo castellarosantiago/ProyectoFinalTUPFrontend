@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { AuthService } from '../services/auth.service';
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
     password: '',
     role: 'empleado' as 'empleado' | 'admin',
@@ -28,11 +29,11 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      const response = await AuthService.login(formData);
+      const response = await AuthService.register(formData);
       login(response.user, response.token);
       navigate('/dashboard');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al iniciar sesión');
+      setError(err instanceof Error ? err.message : 'Error al registrar');
     } finally {
       setLoading(false);
     }
@@ -42,7 +43,7 @@ const LoginPage = () => {
     <div className="flex h-screen items-center justify-center bg-base-200">
       <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
-          <h2 className="card-title justify-center text-primary font-bold">Iniciar Sesión</h2>
+          <h2 className="card-title justify-center text-primary font-bold">Registrarse</h2>
 
           {error && (
             <div className="alert alert-error">
@@ -51,6 +52,21 @@ const LoginPage = () => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="form-control w-full">
+              <label className="label">
+                <span className="label-text">Nombre</span>
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Juan Pérez"
+                className="input input-bordered w-full"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
             <div className="form-control w-full">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -73,7 +89,7 @@ const LoginPage = () => {
               <input
                 type="password"
                 name="password"
-                placeholder="******"
+                placeholder="Min 8 caracteres, mayúscula y número"
                 className="input input-bordered w-full"
                 value={formData.password}
                 onChange={handleChange}
@@ -98,26 +114,20 @@ const LoginPage = () => {
 
             <div className="card-actions justify-center mt-4 gap-2">
               <button
+                type="button"
+                className="btn btn-outline w-1/2"
+                onClick={() => navigate('/login')}
+              >
+                Volver
+              </button>
+              <button
                 type="submit"
-                className="btn btn-primary w-full"
+                className="btn btn-primary w-1/2"
                 disabled={loading}
               >
-                {loading ? 'Ingresando...' : 'Ingresar'}
+                {loading ? 'Registrando...' : 'Registrarse'}
               </button>
             </div>
-
-            <div className="divider"></div>
-
-            <p className="text-center text-sm">
-              ¿No tienes cuenta?{' '}
-              <button
-                type="button"
-                className="link link-primary"
-                onClick={() => navigate('/register')}
-              >
-                Regístrate aquí
-              </button>
-            </p>
           </form>
         </div>
       </div>
@@ -125,4 +135,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
