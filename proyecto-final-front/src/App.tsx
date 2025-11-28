@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./components/Home"; // Layout principal
-import Dashboard from "./components/Dashboard";
-// importar componentes de ventas, productos, categorias y dashboard
-
+import Home from "./pages/Home"; // Layout principal
+import Dashboard from "./pages/Dashboard";
+import CategoriesManager from "./pages/CategoriesManager";
+import ProductsManager from "./pages/ProductManager";
+import SalesRegister from "./pages/SaleRegister";
 
 export default function App() {
   return (
@@ -17,9 +18,9 @@ export default function App() {
         <Route path="/" element={<Home />}>
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
-            {/* <Route path="categories" element={<CategoriesManager />} />
-            <Route path="products" element={<ProductsManager />} /> */}
-            {/* <Route path="sales" element={<SalesManager />} /> */}
+            <Route path="categories" element={<CategoriesManager />} />
+            <Route path="products" element={<ProductsManager />} /> 
+            <Route path="sales" element={<SalesRegister />} /> 
             
             {/* Ruta para cualquier otra URL no encontrada */}
             <Route path="*" element={<h1 className="text-4xl text-error text-center p-10">404 - Página no encontrada</h1>} />
