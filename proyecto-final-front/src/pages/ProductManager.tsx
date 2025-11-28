@@ -116,7 +116,7 @@ export default function ProductsManager() {
   };
 
   return (
-    <div className="container mx-auto p-6 max-w-6xl">
+    <div className="max-w-6xl w-full">
       {/* encabezado y buscador */}
       <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4 border-b border-base-300 pb-6">
         <div>

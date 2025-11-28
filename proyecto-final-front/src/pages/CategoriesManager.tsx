@@ -71,7 +71,7 @@ export default function CategoriesManager() {
   };
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="max-w-6xl w-full">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Gestión de Categorías</h1>
         <button className="btn btn-primary" onClick={() => handleOpenModal()}>
