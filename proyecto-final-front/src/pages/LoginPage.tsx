@@ -7,14 +7,13 @@ const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    role: 'empleado' as 'empleado' | 'admin',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -79,21 +78,6 @@ const LoginPage = () => {
                 onChange={handleChange}
                 required
               />
-            </div>
-
-            <div className="form-control w-full">
-              <label className="label">
-                <span className="label-text">Rol</span>
-              </label>
-              <select
-                name="role"
-                className="select select-bordered w-full"
-                value={formData.role}
-                onChange={handleChange}
-              >
-                <option value="empleado">Empleado</option>
-                <option value="admin">Admin</option>
-              </select>
             </div>
 
             <div className="card-actions justify-center mt-4 gap-2">

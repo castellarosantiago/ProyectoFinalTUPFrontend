@@ -1,11 +1,14 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import MainLayout from './components/MainLayout';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import DashboardPage from './pages/DashboardPage';
+import Dashboard from './pages/Dashboard';
 import CategoriesManager from './pages/CategoriesManager';
 import ProductsManager from './pages/ProductManager';
+import SalesHistory from './pages/SalesHistory';
+import SalesRegister from './pages/SaleRegister';
 
 function App() {
   return (
@@ -21,7 +24,9 @@ function App() {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <MainLayout>
+                  <Dashboard />
+                </MainLayout>
               </ProtectedRoute>
             }
           />
@@ -30,7 +35,9 @@ function App() {
             path="/category"
             element={
               <ProtectedRoute>
-                <CategoriesManager />
+                <MainLayout>
+                  <CategoriesManager />
+                </MainLayout>
               </ProtectedRoute>
             }
           />
@@ -39,7 +46,42 @@ function App() {
             path="/products"
             element={
               <ProtectedRoute>
-                <ProductsManager />
+                <MainLayout>
+                  <ProductsManager />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/sales"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <SalesHistory />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/sales/get"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <SalesHistory />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/sales/register"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <SalesRegister />
+                </MainLayout>
               </ProtectedRoute>
             }
           />
@@ -51,3 +93,5 @@ function App() {
     </BrowserRouter>
   );
 }
+
+export default App;

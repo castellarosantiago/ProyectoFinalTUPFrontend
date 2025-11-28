@@ -6,9 +6,14 @@ export const getSalesCountLastWeek = async (API_URL_SALES:string): Promise<numbe
     const { startDate, endDate } = getDatesForLastWeek();
     const url = `${API_URL_SALES}?startDate=${startDate}&endDate=${endDate}`;
     try {
-        const res = await fetch(url);
+        const token = localStorage.getItem('token') || '';
+        const headers: Record<string,string> = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+        
+        const res = await fetch(url, { headers });
         if (!res.ok) {
-            throw new Error(`API error: ${res.statusText}`);
+            const text = await res.text().catch(() => '');
+            throw new Error(`API error: ${res.status} ${res.statusText} - ${text}`);
         }
         const data = await res.json();
         return Array.isArray(data.sales) ? data.sales.length : 0;

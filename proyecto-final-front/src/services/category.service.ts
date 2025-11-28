@@ -2,9 +2,19 @@ import type { Category, CategoryPayload } from "../types/category";
 
 const API_URL = "http://localhost:5000/api/categories";
 
+// Helper para obtener el token del localStorage
+const getAuthToken = () => {
+  const token = localStorage.getItem('token');
+  return token ? `Bearer ${token}` : '';
+};
+
 export const CategoryService = {
   getAll: async (): Promise<Category[]> => {
-    const res = await fetch(API_URL);
+    const res = await fetch(API_URL, {
+      headers: {
+        'Authorization': getAuthToken(),
+      }
+    });
     if (!res.ok) throw new Error("Error al obtener categorías");
     return res.json();
   }, // retorna una promesa con el array de categorías (Category[])
@@ -12,7 +22,10 @@ export const CategoryService = {
   create: async (payload: CategoryPayload): Promise<Category> => { // recibe los datos limpios sin el id
     const res = await fetch(API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": getAuthToken(),
+      },
       body: JSON.stringify(payload),
     });
     if (!res.ok) throw new Error("Error al crear categoría");
@@ -23,7 +36,10 @@ export const CategoryService = {
   update: async (id: string, payload: CategoryPayload): Promise<Category> => { // recibe el id para saber cual actualizar y los datos nuevos sin el id
     const res = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": getAuthToken(),
+      },
       body: JSON.stringify(payload),
     });
     if (!res.ok) throw new Error("Error al actualizar categoría");
@@ -32,7 +48,12 @@ export const CategoryService = {
   }, // retorna la categoria actualizada
 
   delete: async (id: string): Promise<void> => { //recibe el id de la categoría a eliminar
-    const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    const res = await fetch(`${API_URL}/${id}`, { 
+      method: "DELETE",
+      headers: {
+        'Authorization': getAuthToken(),
+      }
+    });
     if (!res.ok) throw new Error("Error al eliminar categoría");
   } // no retorna nada
 };

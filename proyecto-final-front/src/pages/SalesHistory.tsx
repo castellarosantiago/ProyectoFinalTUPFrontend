@@ -52,14 +52,22 @@ export default function SalesHistory() {
   
   // Formatea la fecha de ISO a DD/MM/YYYY HH:MM
   const formatDateTime = (isoDate: string) => {
-      const date = new Date(isoDate);
-      return date.toLocaleDateString('es-ES', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-      });
+      try {
+        const date = new Date(isoDate);
+        if (isNaN(date.getTime())) {
+          return 'Fecha inválida';
+        }
+        return date.toLocaleString('es-ES', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+      } catch (error) {
+        console.error('Error al formatear fecha:', error);
+        return 'Error en fecha';
+      }
   };
 
   // Cálculo del total general de las ventas filtradas
@@ -172,10 +180,14 @@ export default function SalesHistory() {
                     ${sale.total.toLocaleString('es-ES', { minimumFractionDigits: 2 })}
                   </td>
                   <td className="text-center">
-                    {sale.detail.reduce((acc, d) => acc + d.amountSold, 0)}
+                    {Array.isArray(sale.detail) ? sale.detail.reduce((acc, d) => acc + d.amountSold, 0) : 0}
                   </td>
                   <td className="font-mono text-xs opacity-50">
-                    {sale.user}
+                    {typeof sale.user === 'string'
+                      ? sale.user
+                      : sale.user && typeof sale.user === 'object' && 'name' in sale.user
+                        ? sale.user.name
+                        : 'N/A'}
                   </td>
                 </tr>
               ))}

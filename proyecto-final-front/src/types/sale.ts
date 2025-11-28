@@ -25,7 +25,7 @@ export interface SaleDetailFromDB {
 export interface Sale {
   _id: string;
   date: string; // fecha en formato texto ISO "2023-10-25T14:00:00Z
-  user: string; // id del vendedor/usuario
+  user: string | { _id: string; name: string; email: string; role: string }; // puede ser ID o objeto populado
   detail: SaleDetailFromDB[]; // lista de productos vendido
   total: number;
 }

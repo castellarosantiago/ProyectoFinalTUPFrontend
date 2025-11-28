@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:5000/api/auth';
 export interface LoginPayload {
   email: string;
   password: string;
-  role?: 'empleado' | 'admin';
+  // NOTA: el rol NO se envía en login, se obtiene del backend según la BD
 }
 
 export interface RegisterPayload {

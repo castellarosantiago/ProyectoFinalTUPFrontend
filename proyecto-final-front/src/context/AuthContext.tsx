@@ -25,35 +25,50 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Cargar datos guardados del localStorage al montar
   useEffect(() => {
+    console.log('[AuthContext] Initializing - Loading from localStorage');
     const savedUser = localStorage.getItem('user');
     const savedToken = localStorage.getItem('token');
     
+    console.log('[AuthContext] localStorage state:', {
+      hasUser: !!savedUser,
+      hasToken: !!savedToken,
+      tokenLength: savedToken?.length || 0,
+    });
+    
     if (savedUser && savedToken) {
       try {
-        setUser(JSON.parse(savedUser));
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser);
         setToken(savedToken);
+        console.log('[AuthContext] Successfully restored user:', parsedUser.email);
       } catch (err) {
-        console.error('Error al recuperar datos del localStorage:', err);
+        console.error('[AuthContext] Error parsing localStorage:', err);
         localStorage.removeItem('user');
         localStorage.removeItem('token');
       }
+    } else {
+      console.log('[AuthContext] No saved auth data in localStorage');
     }
     
     setIsLoading(false);
   }, []);
 
   const login = (userData: User, authToken: string) => {
+    console.log('[AuthContext.login] Logging in user:', userData.email);
     setUser(userData);
     setToken(authToken);
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token', authToken);
+    console.log('[AuthContext.login] User and token saved to localStorage');
   };
 
   const logout = () => {
+    console.log('[AuthContext.logout] Logging out user');
     setUser(null);
     setToken(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    console.log('[AuthContext.logout] User and token removed from localStorage');
   };
 
   return (

@@ -1,25 +1,18 @@
-// ...existing code...
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { User } from '../types/user';
+import { useAuth } from '../context/AuthContext';
 import { getSalesCountLastWeek } from '../utils/salesCountLastWeek';
 
 const API_URL_SALES = "http://localhost:5000/api/sales";
 
-// Simulacion del usuario logeado
-// Esto debe cambiarse por el estado real del usuario logeado
-const dummyUser: User = {
-    name: "Juan Pérez", 
-    role: "Admin", 
-};
-
 export default function Dashboard() {
+  const { user, token } = useAuth();
   const [salesCount, setSalesCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
     loadDashboardData();
-  }, []);
+  }, [token]);
 
   const loadDashboardData = async () => {
     setLoading(true);
@@ -45,14 +38,13 @@ export default function Dashboard() {
 
   return (
     <div className="max-w-6xl w-full">
-      
-      <div className="card shadow-xl bg-base-200 p-8">
+      <div className="card shadow-xl bg-base-100 p-8 mb-6">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold text-primary">
-            ¡Hola, {dummyUser.name}!
+            ¡Hola, {user?.name}!
           </h1>
           <div className={`badge text-base-content/70 text-sm p-3 font-semibold border-base-content/20 bg-base-100/30`}>
-            Modo {dummyUser.role}
+            Modo {user?.role === 'admin' ? 'Admin' : 'Empleado'}
           </div>
         </div>
         <p className="text-xl italic mt-4 text-base-content/80">
@@ -74,9 +66,14 @@ export default function Dashboard() {
                 )}
             </div>
         </div>
-        <Link to="/sales" className="btn btn-success border-success-content/50 hover:bg-success-focus">
+        <div className="flex gap-3">
+          <Link to="/sales/register" className="btn btn-success border-success-content/50 hover:bg-success-focus">
+            Registrar Venta
+          </Link>
+          <Link to="/sales" className="btn btn-success border-success-content/50 hover:bg-success-focus">
             Ver Ventas
-        </Link>
+          </Link>
+        </div>
       </div>
     </div>
   );
