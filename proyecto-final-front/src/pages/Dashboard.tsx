@@ -46,7 +46,7 @@ export default function Dashboard() {
   const roleColor = dummyUser.role === "Admin" ? "badge-secondary" : "badge-info";
 
   return (
-    <div className="w-full space-y-8">
+    <div className="max-w-6xl w-full">
       
       <div className="card shadow-xl bg-base-200 p-8">
         <div className="flex items-center justify-between">

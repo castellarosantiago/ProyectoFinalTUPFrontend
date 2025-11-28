@@ -1,13 +1,14 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 
 // Secciones de navegación
-const NAV_ICON = "▸"
+const ICON = "▸"
 
 const NAV_ITEMS = [
   { path: "/dashboard", label: "Dashboard"},
-  { path: "/categories", label: "Categorías"},
-  { path: "/products", label: "Productos"},
-  { path: "/sales", label: "Ventas"},
+  { path: "/categories", label: "Categorías", icon:ICON},
+  { path: "/products", label: "Productos", icon:ICON},
+  { path: "/sales/get", label: "Ver ventas", icon:ICON},
+  { path: "/sales/create", label: "Crear venta", icon:ICON},
 ];
 
 const APPNAME = "SIGN";
@@ -64,7 +65,7 @@ export default function Home() {
                   to={item.path}
                   className={location.pathname === item.path || (location.pathname === "/" && item.path === "/dashboard") ? 
                     "active bg-primary text-primary-content hover:bg-primary-focus" : "hover:bg-base-300"}>
-                  {NAV_ICON} {item.label}
+                  {item.icon} {item.label}
                 </Link>
               </li>
             ))}

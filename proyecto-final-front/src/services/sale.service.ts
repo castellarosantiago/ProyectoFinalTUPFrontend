@@ -1,13 +1,19 @@
 import type { Sale, SalePayload } from "../types/sale";
+import type { SaleFilterParams } from "../types/sale";
 
 const API_URL = "http://localhost:5000/api/sales";
 
 export const SaleService = {
   
 
-  getAll: async (): Promise<Sale[]> => { // obtener el historial de ventas
+  getAll: async (filters: SaleFilterParams = {}): Promise<Sale[]> => { // obtener el historial de ventas
     try {
-      const res = await fetch(API_URL);
+      const url = new URL(API_URL);
+
+      if (filters.startDate) url.searchParams.append('startDate', filters.startDate);
+      if (filters.endDate) url.searchParams.append('endDate', filters.endDate);
+
+      const res = await fetch(url.toString());
       
       // si el servidor se cae (500) o no encuentra ruta (404) lanzamos error
       if (!res.ok) throw new Error("Error al obtener el historial de ventas");

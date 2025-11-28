@@ -29,3 +29,15 @@ export interface Sale {
   detail: SaleDetailFromDB[]; // lista de productos vendido
   total: number;
 }
+
+
+export interface SaleFilterParams {
+  startDate?: string; // Formato YYYY-MM-DD
+  endDate?: string;   // Formato YYYY-MM-DD 
+}
+
+// Tipos para el estado del formulario de filtros
+export interface FilterState {
+  startDate: string;
+  endDate: string;
+}

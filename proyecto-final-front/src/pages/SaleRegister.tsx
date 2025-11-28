@@ -127,7 +127,7 @@ export default function SalesRegister() {
 
 
   return (
-    <div className="container mx-auto p-6 max-w-[1600px] h-[calc(100vh-1rem)] flex flex-col">
+    <div className="max-w-6xl w-full">
       {/* titulo */}
       <div className="mb-6 border-b border-base-300 pb-4">
          <h1 className="text-3xl font-bold text-base-content">Punto de Venta</h1>
