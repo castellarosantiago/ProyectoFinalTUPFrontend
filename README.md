@@ -1,16 +1,16 @@
-# SIGN - Sistema Integral de Gestión de Negocio
+# Documentación Frontend 🎨 - Sistema Integral de Gestión de Negocio
 
 Frontend de la aplicación SIGN, un sistema completo para la gestión integral de negocios que permite administrar inventario, ventas, productos y categorías de manera eficiente.
 
-## 🚀 Tecnologías Principales
+## Tecnologías Principales
 
-- **React 18+** con TypeScript
+- **React** con TypeScript
 - **React Router** para navegación
 - **DaisyUI** para componentes de interfaz
 - **Tailwind CSS** para estilos
 - **Context API** para gestión de estado global
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 src/
@@ -46,7 +46,7 @@ src/
     └── salesCountLastWeek.ts    # Conteo de ventas por período
 ```
 
-## ✨ Funcionalidades Principales
+## Funcionalidades Principales
 
 ### Gestión de Ventas
 - Registro de ventas con interfaz intuitiva de punto de venta
@@ -68,7 +68,7 @@ src/
 - Persistencia de sesión con localStorage
 - Manejo de sesión: Login y logout con actualización de estado global
 
-## 🌐 Servicios API
+## Servicios API
 
 La aplicación utiliza una arquitectura basada en servicios para la comunicación con el backend:
 
@@ -101,11 +101,11 @@ Todos los servicios implementan:
 - Validación de respuestas del backend
 - Headers apropiados para cada tipo de petición
 
-## 🎨 Interfaz de Usuario
+## Interfaz de Usuario
 
 El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz moderna y responsive, con componentes optimizados para la experiencia del usuario en punto de venta y administración.
 
-## 🔧 Características Técnicas
+## Características Técnicas
 
 - **TypeScript**: Tipado fuerte con interfaces para todos los modelos de datos
 - **Componentes Protegidos**: Sistema de ProtectedRoute basado en Context API
@@ -115,7 +115,7 @@ El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz
 - **Validación de Datos**: Payloads específicos para creación y actualización
 - **Comunicación API**: Fetch con manejo de tokens de autorización
 
-## 📄 Páginas de la Aplicación
+## Páginas de la Aplicación
 
 ### Autenticación
 - **LoginPage**: Formulario de inicio de sesión con validación de credenciales
@@ -160,7 +160,7 @@ El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz
   - Contador de ventas encontradas
   - Información del vendedor por cada transacción
 
-## 📦 Instalación
+## Instalación
 
 ``` bash
 # Instalar dependencias
