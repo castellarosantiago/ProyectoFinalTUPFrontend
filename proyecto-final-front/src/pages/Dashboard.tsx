@@ -67,10 +67,10 @@ export default function Dashboard() {
             </div>
         </div>
         <div className="flex gap-3">
-          <Link to="/sales/register" className="btn btn-success border-success-content/50 hover:bg-success-focus">
+          <Link to="/sales/create" className="btn btn-success border-success-content/50 hover:bg-success-focus">
             Registrar Venta
           </Link>
-          <Link to="/sales" className="btn btn-success border-success-content/50 hover:bg-success-focus">
+          <Link to="/sales/get" className="btn btn-success border-success-content/50 hover:bg-success-focus">
             Ver Ventas
           </Link>
         </div>
