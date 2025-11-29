@@ -4,7 +4,7 @@ Frontend de la aplicación SIGN, un sistema completo para la gestión integral d
 
 ## 🚀 Tecnologías Principales
 
-- **React 18+** con TypeScript
+- **React** con TypeScript
 - **React Router** para navegación
 - **DaisyUI** para componentes de interfaz
 - **Tailwind CSS** para estilos
