@@ -1,4 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 // Secciones de navegación
 const ICON = "▸"
@@ -16,12 +17,12 @@ const APPNAME = "SIGN";
 export default function Home() {
   const location = useLocation(); 
 
-
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    // Lógica real de cierre de sesión
-    alert("¡Sesión cerrada! (Redirigir a /login)"); 
-    // Después de limpiar tokens/estado, se usaría navigate('/login')
+    // Usamos la función logout real
+    logout(); 
+    // La función logout de AuthContext debe manejar la redirección a /login
   };
 
 
