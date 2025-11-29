@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import type { Category, CategoryPayload } from "../types/category";
 import { CategoryService } from "../services/category.service";
 
@@ -47,14 +48,16 @@ export default function CategoriesManager() {
     try {
       if (currentCategory) {
         await CategoryService.update(currentCategory._id, formData);
+        toast.success("Categoría actualizada correctamente");
       } else {
         await CategoryService.create(formData);
+        toast.success("Categoría creada correctamente");
       }
       setIsModalOpen(false);
       loadCategories(); // Recargar la lista
     } catch (error) {
       console.error(error);
-      alert("Error al guardar la categoría");
+      toast.error("Error al guardar la categoría");
     }
   };
 
@@ -64,9 +67,10 @@ export default function CategoriesManager() {
     try {
       await CategoryService.delete(id);
       setCategories(categories.filter((c) => c._id !== id));
+      toast.success("Categoría eliminada correctamente");
     } catch (error) {
       console.error(error);
-      alert("Error al eliminar");
+      toast.error("Error al eliminar la categoría");
     }
   };
 

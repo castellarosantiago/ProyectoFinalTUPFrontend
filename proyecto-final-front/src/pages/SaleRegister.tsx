@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import type { Product } from "../types/product";
 import type { SaleItem, SalePayload } from "../types/sale";
 import { ProductService } from "../services/product.service";
@@ -48,7 +49,7 @@ export default function SalesRegister() {
       if (existingItem) {
         // aumentar cantidad
         if (existingItem.quantity + 1 > product.stock) {
-          alert(`⚠️ Stock límite alcanzado para: ${product.name}`);
+          toast.warning(`Stock límite alcanzado para: ${product.name}`);
           return prevItems;
         }
         return prevItems.map((item) =>
@@ -74,7 +75,7 @@ export default function SalesRegister() {
       const item = prevItems.find((i) => i.product._id === productId);
       // validar stock
       if (item && newQty > item.product.stock) {
-         alert(`Stock insuficiente. Máximo disponible: ${item.product.stock}`);
+         toast.error(`Stock insuficiente. Máximo disponible: ${item.product.stock}`);
          return prevItems; 
       }
       return prevItems.map((item) =>
@@ -110,15 +111,15 @@ export default function SalesRegister() {
       // enviar al servicio de ventas
       await SaleService.create(payload);
       
-      alert("✅ Venta registrada correctamente.");
+      toast.success("Venta registrada correctamente");
       setCurrentSaleItems([]);
       loadInventory(); // recargar inventario para actualizar stocks
     } catch (error) {
       console.error(error);
       if (error instanceof Error) {
-        alert("Error: " + error.message);
+        toast.error("Error: " + error.message);
       } else {
-        alert("Ocurrió un error desconocido al procesar la venta.");
+        toast.error("Ocurrió un error desconocido al procesar la venta");
       }
     } finally {
       setProcessing(false);
