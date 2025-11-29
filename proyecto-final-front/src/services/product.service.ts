@@ -32,7 +32,7 @@ export const ProductService = {
     
     const token = getAuthToken();
     console.log('[ProductService.searchByName] Searching:', name, 'with token:', !!token);
-    const res = await fetch(`${API_URL}/search?name=${name}`, {
+    const res = await fetch(`${API_URL}/search/name?name=${name}`, {
       headers: token ? { 'Authorization': token } : {},
     });
     
