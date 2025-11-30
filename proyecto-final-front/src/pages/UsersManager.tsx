@@ -60,13 +60,13 @@ export default function UsersManager() {
 
       await UserService.update(currentUser._id, updatePayload);
       
-      alert("✅ Usuario actualizado correctamente.");
+      alert("Usuario actualizado correctamente.");
       setIsModalOpen(false);
       loadUsers(); // Recargar la lista
     } catch (err) {
       const message = err instanceof Error ? err.message : "Error al actualizar el usuario.";
       setError(message);
-      alert("❌ Error: " + message);
+      alert("Error: " + message);
     } finally {
       setLoading(false);
     }
@@ -83,12 +83,12 @@ export default function UsersManager() {
 
     try {
       await UserService.delete(user._id);
-      alert("🗑️ Usuario eliminado correctamente.");
+      alert("Usuario eliminado correctamente.");
       loadUsers(); // Recargar la lista
     } catch (err) {
       const message = err instanceof Error ? err.message : "Error al eliminar el usuario.";
       setError(message);
-      alert("❌ Error: " + message);
+      alert("Error: " + message);
     } finally {
       setIsDeleting(false);
     }

@@ -27,7 +27,7 @@ export default function SalesHistory() {
     setLoading(true);
     setError(null);
     try {
-      const data: PaginatedSalesResponse = await SaleService.getAll(currentFilters); 
+      const data: PaginatedSalesResponse = await SaleService.getAllFilter(currentFilters); 
       
       setSales(data.sales);
       setTotalCount(data.totalCount);

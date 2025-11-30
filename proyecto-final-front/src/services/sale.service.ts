@@ -11,7 +11,8 @@ const getAuthToken = () => {
 
 export const SaleService = {
   
-  getAll: async (filters: FilterState): Promise<PaginatedSalesResponse> => { 
+// Usa paginación
+  getAllFilter: async (filters: FilterState): Promise<PaginatedSalesResponse> => { 
     try {
       const url = new URL(API_URL);
 
@@ -19,6 +20,7 @@ export const SaleService = {
       if (filters.startDate) url.searchParams.append('startDate', filters.startDate);
       if (filters.endDate) url.searchParams.append('endDate', filters.endDate);
     
+      // Agregar filtros de Paginación
       url.searchParams.append('page', filters.page.toString());
       url.searchParams.append('limit', filters.limit.toString());
 
@@ -40,7 +42,7 @@ export const SaleService = {
         throw new Error("Respuesta del servidor inválida o sin formato paginado.");
       }
 
-      // Retornar la respuesta completa
+      // Retornar la respuesta completa incluyendo los metadatos de paginación
       return {
           sales: data.sales, 
           totalCount: data.totalCount, 
@@ -49,7 +51,41 @@ export const SaleService = {
       };
 
     } catch (error) {
-      console.error("Error en getAll sales:", error);
+      console.error("Error en getAll sales (paginado):", error);
+      throw error; 
+    }
+  },
+
+  // Obtiene TODAS las ventas
+  getAll: async (): Promise<Sale[]> => {
+    try {
+      const url = new URL(API_URL); // URL sin parámetros de paginación
+      const token = getAuthToken();
+
+      const res = await fetch(url.toString(), {
+        headers: {
+          'Authorization': token,
+        }
+      });
+      
+      if (!res.ok) {
+        console.error(`Error ${res.status}: ${res.statusText}`);
+        throw new Error("Error al obtener el historial de ventas completo");
+      }
+      
+      const data = await res.json();
+      
+      if (Array.isArray(data)) {
+        return data as Sale[]; 
+      }
+      
+      if (data.sales && Array.isArray(data.sales)) {
+          return data.sales as Sale[];
+      }
+      
+      throw new Error("Respuesta del servidor inválida para obtener todas las ventas.");
+    } catch (error) {
+      console.error("Error en getAll:", error);
       throw error; 
     }
   },
