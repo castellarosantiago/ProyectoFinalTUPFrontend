@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { AdminRoute } from './components/AdminRoute';
 
 // Importaciones de Páginas y Layout
 import LoginPage from './pages/LoginPage';
@@ -40,7 +41,7 @@ function App() {
             <Route path="products" element={<ProductsManager />} /> 
             <Route path="sales/get" element={<SalesHistory />} />
             <Route path="sales/create" element={<SalesRegister />} /> 
-            <Route path="users" element={<UsersManager />} />
+            <Route path="users" element={ <AdminRoute><UsersManager /></AdminRoute>} />
             
             {/* Ruta para cualquier otra URL no encontrada dentro del layout */}
             <Route path="*" element={<h1 className="text-4xl text-error text-center p-10">404 - Página no encontrada</h1>} />
