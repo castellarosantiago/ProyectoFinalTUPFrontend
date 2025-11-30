@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { path: "/products", label: "Productos", icon:ICON},
   { path: "/sales/get", label: "Ver ventas", icon:ICON},
   { path: "/sales/create", label: "Crear venta", icon:ICON},
+  { path: "/users", label: "Usuarios", icon:ICON, requiresAdmin: true},
 ];
 
 const APPNAME = "SIGN";
@@ -17,13 +18,22 @@ const APPNAME = "SIGN";
 export default function Home() {
   const location = useLocation(); 
 
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   const handleLogout = () => {
     // Usamos la función logout real
     logout(); 
     // La función logout de AuthContext debe manejar la redirección a /login
   };
+
+  // Lógica para filtrar los elementos de navegación
+  const navItemsFiltered = NAV_ITEMS.filter(item => {
+    // Si el elemento no requiere ser admin, siempre se muestra
+    if (!item.requiresAdmin) {
+      return true;
+    }
+    return user && (user.role === 'admin');
+  });
 
 
   return (
@@ -53,14 +63,14 @@ export default function Home() {
           </div>
         </div>
       </div>
-      
+  
       {/* Navegacion lateral  */}
       <div className="flex flex-grow">
 
         <div className="w-64 bg-base-200 shadow-xl p-4 flex-none border-r border-base-300">
           <ul className="menu menu-vertical p-0">
             <li className="menu-title">Navegación Principal</li>
-            {NAV_ITEMS.map((item) => (
+            {navItemsFiltered.map((item) => (
               <li key={item.path}>
                 <Link
                   to={item.path}

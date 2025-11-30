@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from "react";
-import type { Sale } from "../types/sale";
+import React, { useEffect, useState, useMemo } from "react";
+import type { Sale, FilterState, PaginatedSalesResponse } from "../types/sale";
 import { SaleService } from "../services/sale.service";
-import type { FilterState } from "../types/sale";
 import { Link } from 'react-router-dom';
 import { getDatesForLastWeek } from "../utils/datesLastWeek";
 
-
-// Valores iniciales (por defecto, la semana actual)
-const initialFilters: FilterState = getDatesForLastWeek();
+const initialFilters: FilterState = { 
+  ...getDatesForLastWeek(), 
+  page: 1, 
+  limit: 10 // 10 ventas por página por defecto
+};
 
 export default function SalesHistory() {
   const [sales, setSales] = useState<Sale[]>([]);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<FilterState>(initialFilters);
   const [error, setError] = useState<string | null>(null);
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
-  // Carga inicial y al aplicar filtros
   useEffect(() => {
     loadSales(filters);
   }, [filters]); 
@@ -25,13 +27,18 @@ export default function SalesHistory() {
     setLoading(true);
     setError(null);
     try {
-      // Llama al servicio con los filtros actualizados
-      const data = await SaleService.getAll(currentFilters);
-      setSales(data);
+      const data: PaginatedSalesResponse = await SaleService.getAll(currentFilters); 
+      
+      setSales(data.sales);
+      setTotalCount(data.totalCount);
+      setTotalPages(data.totalPages);
+
     } catch (err) {
       console.error(err);
       setError("No se pudo cargar el historial de ventas. Intenta recargar la página.");
       setSales([]);
+      setTotalCount(0);
+      setTotalPages(0);
     } finally {
       setLoading(false);
     }
@@ -42,15 +49,21 @@ export default function SalesHistory() {
     setFilters({
       ...filters,
       [e.target.name]: e.target.value,
+      page: 1, // Al cambiar los filtros, siempre volver a la primera página
     });
   };
-
-  // Aplica los filtros (se llama automáticamente desde useEffect cuando 'filters' cambia)
-  const handleApplyFilters = (e: React.FormEvent) => {
-      e.preventDefault();
+  
+  const handlePageChange = (newPage: number) => {
+    // Validar que la nueva página sea válida
+    if (newPage >= 1 && newPage <= totalPages) {
+        setFilters(prev => ({
+            ...prev,
+            page: newPage
+        }));
+    }
   };
   
-  // Formatea la fecha de ISO a DD/MM/YYYY HH:MM
+  // Formatea la fecha de ISO a DD/MM/YYYY HH:MM 
   const formatDateTime = (isoDate: string) => {
       try {
         const date = new Date(isoDate);
@@ -71,7 +84,9 @@ export default function SalesHistory() {
   };
 
   // Cálculo del total general de las ventas filtradas
-  const grandTotal = sales.reduce((acc, sale) => acc + sale.total, 0);
+  const grandTotal = useMemo(() => {
+    return sales.reduce((acc, sale) => acc + sale.total, 0);
+  }, [sales]);
 
 
   return (
@@ -87,13 +102,13 @@ export default function SalesHistory() {
                 Visualiza, filtra y gestiona el registro completo de ventas.
             </p>
         </div>
-        <Link to="/sales/register" className="btn btn-primary btn-sm md:btn-md shadow-lg">
+        <Link to="/sales/create" className="btn btn-primary btn-sm md:btn-md shadow-lg">
             Registrar Nueva Venta
         </Link>
       </div>
 
       {/* 2. Formulario de Filtros */}
-      <form onSubmit={handleApplyFilters} className="bg-base-200 p-4 rounded-lg shadow-md mb-6 flex flex-col md:flex-row gap-4 items-center">
+      <div className="bg-base-200 p-4 rounded-lg shadow-md mb-6 flex flex-col md:flex-row gap-4 items-center">
         <div className="form-control w-full md:w-auto">
           <label className="label">
             <span className="label-text">Fecha Inicio</span>
@@ -122,27 +137,43 @@ export default function SalesHistory() {
           />
         </div>
         
-        <div className="pt-4 md:pt-7">
-           {/* El botón solo sirve para evitar el submit nativo y forzar el update del useEffect */}
-           <button type="submit" className="btn btn-primary btn-sm hidden">
-             Aplicar Filtro
-           </button>
+        {/* Límite por página */}
+        <div className="form-control w-full md:w-auto">
+          <label className="label">
+            <span className="label-text">Ventas por Página</span>
+          </label>
+          <select
+            name="limit"
+            value={filters.limit}
+            // Al cambiar el límite, se actualiza el estado y se resetea a página 1
+            onChange={(e) => setFilters({...filters, limit: Number(e.target.value), page: 1})} 
+            className="select select-bordered select-sm"
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+          </select>
         </div>
-      </form>
+      </div>
       
-      {/* 3. Indicador de Total Filtrado */}
+      {/* Indicador de Total Filtrado - Ahora usa totalCount y totalPages */}
       <div className="stats shadow bg-primary text-primary-content mb-6 w-full">
         <div className="stat">
-            <div className="stat-title text-primary-content/80">Ventas Encontradas</div>
-            <div className="stat-value">{sales.length}</div>
+            <div className="stat-title text-primary-content/80">Ventas Encontradas (Total)</div>
+            <div className="stat-value">{totalCount}</div>
         </div>
         <div className="stat">
-            <div className="stat-title text-primary-content/80">Total General ($)</div>
+            <div className="stat-title text-primary-content/80">Total Visto ($)</div>
             <div className="stat-value tracking-tight">${grandTotal.toLocaleString('es-ES', { minimumFractionDigits: 2 })}</div>
+        </div>
+        <div className="stat">
+            <div className="stat-title text-primary-content/80">Página Actual</div>
+            <div className="stat-value text-xl">{filters.page} / {totalPages}</div>
         </div>
       </div>
 
-      {/* 4. Tabla de Historial */}
+      {/* Tabla de Historial */}
       {error && (
         <div className="alert alert-error shadow-lg my-4">
           <div><span>{error}</span></div>
@@ -153,7 +184,7 @@ export default function SalesHistory() {
         <div className="flex justify-center p-20">
           <span className="loading loading-spinner loading-lg text-primary"></span>
         </div>
-      ) : sales.length === 0 ? (
+      ) : sales.length === 0 && totalCount === 0 ? (
         <div className="alert alert-warning shadow-lg my-4">
           <div><span>No se encontraron ventas para el rango de fechas seleccionado.</span></div>
         </div>
@@ -193,6 +224,35 @@ export default function SalesHistory() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Paginación */}
+      {!loading && totalPages > 1 && (
+        <div className="flex justify-center mt-6 gap-4"> 
+            
+            <button 
+                className="btn btn-lg shadow-md" 
+                onClick={() => handlePageChange(filters.page - 1)}
+                disabled={filters.page === 1 || loading}
+            >
+                ◀︎
+            </button>
+
+            <div className="flex items-center">
+                 <span className="text-lg font-semibold text-base-content opacity-80">
+                    {filters.page}/{totalPages}
+                </span>
+            </div>
+
+            <button 
+                className="btn btn-lg shadow-md"
+                onClick={() => handlePageChange(filters.page + 1)}
+                disabled={filters.page === totalPages || loading}
+            >
+                ▶︎
+            </button>
+            
         </div>
       )}
     </div>
