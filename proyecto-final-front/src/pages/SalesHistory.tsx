@@ -87,7 +87,7 @@ export default function SalesHistory() {
                 Visualiza, filtra y gestiona el registro completo de ventas.
             </p>
         </div>
-        <Link to="/sales/register" className="btn btn-primary btn-sm md:btn-md shadow-lg">
+        <Link to="/sales/create" className="btn btn-primary btn-sm md:btn-md shadow-lg">
             Registrar Nueva Venta
         </Link>
       </div>
