@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Sale, SalePayload } from "../types/sale";
-import type { SaleFilterParams } from "../types/sale";
+import type { Sale, SalePayload, FilterState, PaginatedSalesResponse } from "../types/sale"; 
 
 const API_URL = "http://localhost:5000/api/sales";
 
@@ -12,13 +11,16 @@ const getAuthToken = () => {
 
 export const SaleService = {
   
-
-  getAll: async (filters: SaleFilterParams = {}): Promise<Sale[]> => { // obtener el historial de ventas
+  getAll: async (filters: FilterState): Promise<PaginatedSalesResponse> => { 
     try {
       const url = new URL(API_URL);
 
+      // Agregar filtros de fecha
       if (filters.startDate) url.searchParams.append('startDate', filters.startDate);
       if (filters.endDate) url.searchParams.append('endDate', filters.endDate);
+    
+      url.searchParams.append('page', filters.page.toString());
+      url.searchParams.append('limit', filters.limit.toString());
 
       const res = await fetch(url.toString(), {
         headers: {
@@ -26,7 +28,6 @@ export const SaleService = {
         }
       });
       
-      // si el servidor se cae (500) o no encuentra ruta (404) lanzamos error
       if (!res.ok) {
         console.error(`Error ${res.status}: ${res.statusText}`);
         throw new Error("Error al obtener el historial de ventas");
@@ -34,42 +35,29 @@ export const SaleService = {
       
       const data = await res.json();
       
-      // Validar que la respuesta tenga el formato esperado
-      if (!Array.isArray(data.sales)) {
-        console.warn("La respuesta no tiene el formato esperado:", data);
-        return [];
+      // Validar la nueva estructura paginada
+      if (!Array.isArray(data.sales) || typeof data.totalCount !== 'number' || typeof data.totalPages !== 'number') {
+        throw new Error("Respuesta del servidor inválida o sin formato paginado.");
       }
-      
-      // Validar cada venta y asignar valores por defecto
-      return data.sales.map((sale: any) => {
-        // Extraer nombre del usuario (puede ser string o objeto)
-        let userName = 'Desconocido';
-        if (typeof sale.user === 'string') {
-          userName = sale.user;
-        } else if (sale.user && typeof sale.user === 'object' && sale.user.name) {
-          userName = sale.user.name;
-        }
 
-        return {
-          _id: sale._id || '',
-          date: sale.date || new Date().toISOString(),
-          user: userName,
-          detail: Array.isArray(sale.detail) ? sale.detail : [],
-          total: sale.total || 0,
-        };
-      });
+      // Retornar la respuesta completa
+      return {
+          sales: data.sales, 
+          totalCount: data.totalCount, 
+          totalPages: data.totalPages,
+          currentPage: data.currentPage,
+      };
+
     } catch (error) {
       console.error("Error en getAll sales:", error);
-      return []; // si falla devolvemos array vacío para que la tabla no rompa la pantalla
+      throw error; 
     }
   },
-
 
   create: async (payload: SalePayload): Promise<Sale> => { // registrar una nueva venta
     try {
       const token = getAuthToken();
       
-      // Debug: verificar si el token existe
       if (!token || token === 'Bearer ') {
         throw new Error("No hay token de autenticación. Por favor, inicia sesión nuevamente.");
       }
