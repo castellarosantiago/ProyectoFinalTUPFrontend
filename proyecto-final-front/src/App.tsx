@@ -11,6 +11,7 @@ import CategoriesManager from './pages/CategoriesManager';
 import ProductsManager from './pages/ProductManager';
 import SalesHistory from './pages/SalesHistory';
 import SalesRegister from './pages/SaleRegister';
+import UsersManager from './pages/UsersManager';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             <Route path="products" element={<ProductsManager />} /> 
             <Route path="sales/get" element={<SalesHistory />} />
             <Route path="sales/create" element={<SalesRegister />} /> 
+            <Route path="users" element={<UsersManager />} />
             
             {/* Ruta para cualquier otra URL no encontrada dentro del layout */}
             <Route path="*" element={<h1 className="text-4xl text-error text-center p-10">404 - Página no encontrada</h1>} />

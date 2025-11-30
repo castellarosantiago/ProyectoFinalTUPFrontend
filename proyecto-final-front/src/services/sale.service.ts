@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Sale, SalePayload } from "../types/sale";
 import type { SaleFilterParams } from "../types/sale";
 

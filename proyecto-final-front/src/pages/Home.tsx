@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { path: "/products", label: "Productos", icon:ICON},
   { path: "/sales/get", label: "Ver ventas", icon:ICON},
   { path: "/sales/create", label: "Crear venta", icon:ICON},
+  { path: "/users", label: "Usuarios", icon:ICON},
 ];
 
 const APPNAME = "SIGN";
