@@ -90,7 +90,7 @@ export default function SalesHistory() {
 
 
   return (
-    <div className="max-w-6xl w-full">
+    <div className="max-w-6xl w-full mx-auto">
       
       {/* 1. Encabezado y Opciones */}
       <div className="mb-6 border-b border-base-300 pb-4 flex justify-between items-center">
