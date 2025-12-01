@@ -28,6 +28,7 @@ src/
 │   ├── LoginPage.tsx          # Inicio de sesión
 │   ├── RegisterPage.tsx       # Registro de usuarios
 │   ├── Home.tsx               # Layout con navegación lateral
+│   ├── ProfilePage.tsx        # Gestión de perfil de usuario
 │   ├── ProductManager.tsx     # Gestión de inventario
 │   ├── CategoriesManager.tsx  # Gestión de categorías
 │   ├── SaleRegister.tsx       # Creación de ventas
@@ -59,6 +60,7 @@ src/
 - Historial de ventas con filtrado por fechas
 - Actualización automática de stock tras cada venta
 - Paginación del historial
+- Generación de reportes en PDF desde el Dashboard
 
 ### Administración
 - Gestión completa de productos (CRUD)
@@ -66,6 +68,11 @@ src/
 - Gestión de usuarios de parte del Admin
 - Dashboard con información general y métricas
 - Reportes de ventas de la última semana
+
+### Gestión de Perfil
+- Edición de datos personales (nombre y email)
+- Cambio de contraseña de forma segura
+- Reautenticación automática después de actualizar datos
 
 ### Autenticación y Seguridad
 - Sistema de login con autenticación JWT
@@ -121,6 +128,7 @@ El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz
 - **Filtros Avanzados**: Sistema de filtrado de ventas por rango de fechas
 - **Validación de Datos**: Payloads específicos para creación y actualización
 - **Comunicación API**: Fetch con manejo de tokens de autorización
+- **Generación de PDF**: Capacidad para generar reportes en formato PDF
 
 ## Páginas de la Aplicación
 
@@ -133,11 +141,13 @@ El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz
   - Menú lateral con acceso a todas las secciones
   - Información del usuario actual
   - Opción de cerrar sesión
+  - Acceso a perfil de usuario
 
 - **Dashboard**: Panel de control principal
   - Bienvenida personalizada por usuario
   - Gráficos con métricas de ventas y productos vendidos
   - Accesos rápidos a funciones principales
+  - Generación de reportes en PDF
 
 ### Gestión de Productos
 - **ProductManager**: Administración completa del inventario
@@ -168,10 +178,17 @@ El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz
   - Información del vendedor por cada transacción
 
 ### Gestión de Usuarios
-- **UsersManager**: Punto de venta (POS)
-  - Tabla de usuarios con su información detallada.
-  - Opciónes de modificación y eliminación
+- **UsersManager**: Administración de usuarios (Solo Admins)
+  - Tabla de usuarios con su información detallada
+  - Opciones de modificación y eliminación
   - Uso restringido solo para Admins
+
+- **ProfilePage**: Gestión de perfil personal
+  - Edición de nombre completo y email
+  - Cambio de contraseña con confirmación
+  - Validación de contraseñas coincidentes
+  - Reautenticación automática tras actualización
+  - Formulario protegido con autenticación JWT
 
 ## Instalación
 
@@ -181,5 +198,3 @@ npm install
 
 # Iniciar en modo desarrollo
 npm run dev
-```
-
