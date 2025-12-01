@@ -40,7 +40,8 @@ export default function ProfilePage() {
                 body: JSON.stringify({
                     name: formData.name,
                     email: formData.email,
-                    password: formData.password || undefined
+                    password: formData.password || undefined,
+                    confirmPassword: formData.confirmPassword || undefined
                 })
             });
 
