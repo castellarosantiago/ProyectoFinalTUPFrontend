@@ -29,16 +29,17 @@ La API implementa operaciones CRUD completas para:
 - Categorías  
 - Ventas  
 
-![Diagrama UML](img/uml.png)
+![Diagrama UML](img-utils/uml.png)
 
 Se creó una colección Postman documentada con los endpoints y ejemplos de uso.  
 **Ubicación en repositorio backend:** docs/coleccion_postman.md  
-**Enlace a Postman:** https://crimson-astronaut-727087.postman.co/workspace/New-Team-Workspace~1e1e2ae6-4982-4ebe-a999-dedd3da3b3fb/collection/40783075-de6176d3-933a-42cf-bd05-982ff8a850b2?action=share&creator=40783075
+**Enlace a Postman:** https://crimson-astronaut-727087.postman.co/workspace/New-Team-Workspace~1e1e2ae6-4982-4ebe-a999-dedd3da3b3fb/collection/40783075-de6176d3-933a-42cf-bd05-982ff8a850b2?action=share&creator=40783075  
+**Colección exportada:** [Link al json](<img-utils/SIGN - API.postman_collection.json>)  
 
 ## Base de datos MongoDB
 Creamos una base de datos **MongoDB** y la gestionamos mediante su ODM **Mongoose**.  
 Es consumida por el backend mediante la constante MONGO_URI en el archivo .env, y por el frontend mediante servicios organizados (AuthService, ProductService, etc.) con manejo de tokens y validación.
-![diagrama generado en MongoDB Compass](img/esquema_bd.png)
+![diagrama generado en MongoDB Compass](img-utils/esquema_bd.png)
 
 ---
 
