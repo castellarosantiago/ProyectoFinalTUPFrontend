@@ -8,13 +8,14 @@ import { AdminRoute } from './components/AdminRoute';
 // Importaciones de Páginas y Layout
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import Home from "./pages/Home"; 
+import Home from "./pages/Home";
 import Dashboard from './pages/Dashboard';
 import CategoriesManager from './pages/CategoriesManager';
 import ProductsManager from './pages/ProductManager';
 import SalesHistory from './pages/SalesHistory';
 import SalesRegister from './pages/SaleRegister';
 import UsersManager from './pages/UsersManager';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
               // Protege el componente Home. Si el usuario no está logeado,
               // ProtectedRoute lo redirigirá a /login.
               <ProtectedRoute>
-                <Home /> 
+                <Home />
               </ProtectedRoute>
             }
           >
@@ -41,17 +42,18 @@ function App() {
             <Route index element={<Dashboard />} /> {/* / */}
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="categories" element={<CategoriesManager />} />
-            <Route path="products" element={<ProductsManager />} /> 
+            <Route path="products" element={<ProductsManager />} />
             <Route path="sales/get" element={<SalesHistory />} />
-            <Route path="sales/create" element={<SalesRegister />} /> 
-            <Route path="users" element={ <AdminRoute><UsersManager /></AdminRoute>} />
-            
+            <Route path="sales/create" element={<SalesRegister />} />
+            <Route path="users" element={<AdminRoute><UsersManager /></AdminRoute>} />
+            <Route path="profile" element={<ProfilePage />} />
+
             {/* Ruta para cualquier otra URL no encontrada dentro del layout */}
             <Route path="*" element={<h1 className="text-4xl text-error text-center p-10">404 - Página no encontrada</h1>} />
           </Route>
 
           <Route path="*" element={<Navigate to="/login" replace />} />
-          
+
         </Routes>
       </AuthProvider>
     </BrowserRouter>

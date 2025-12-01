@@ -78,6 +78,34 @@ export default function SalesDashboard() {
           </div>
         </div>
         <div className="flex gap-3">
+          <button
+            onClick={async () => {
+              try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:5000/api/sales/report', {
+                  headers: {
+                    'Authorization': `Bearer ${token}`
+                  }
+                });
+                if (!response.ok) throw new Error('Error al generar reporte');
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'reporte_ventas.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+              } catch (error) {
+                console.error('Error downloading report:', error);
+                alert('Error al descargar el reporte');
+              }
+            }}
+            className="btn bg-white text-success border-none hover:bg-gray-100 shadow-md"
+          >
+            Generar Reporte PDF
+          </button>
           <Link
             to="/sales/create"
             className="btn bg-white text-success border-none hover:bg-gray-100 shadow-md"
