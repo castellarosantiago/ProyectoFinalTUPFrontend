@@ -1,25 +1,26 @@
-# SIGN - Sistema Integral de Gestión de Negocio
+# Documentación Frontend 🎨 - Sistema Integral de Gestión de Negocio
 
 Frontend de la aplicación SIGN, un sistema completo para la gestión integral de negocios que permite administrar inventario, ventas, productos y categorías de manera eficiente.
 
-## 🚀 Tecnologías Principales
+## Tecnologías Principales
 
-- **React 18+** con TypeScript
+- **React** con TypeScript
 - **React Router** para navegación
 - **DaisyUI** para componentes de interfaz
 - **Tailwind CSS** para estilos
 - **Context API** para gestión de estado global
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 src/
 ├── App.tsx                 # Configuración principal y rutas
 ├── components/             # Componentes reutilizables
+│   ├── AdminRoute.tsx        # Protección de rutas por rol Admin
+│   ├── ProtectedRoute.tsx    # HOC para protección de rutas
 │   └── sale/              # Componentes del módulo de ventas
 │       ├── InventoryPanel.tsx    # Panel de inventario con búsqueda
-│       ├── OrderTicket.tsx       # Ticket de orden en tiempo real
-│       └── ProtectedRoute.tsx    # HOC para protección de rutas
+│       └── OrderTicket.tsx       # Ticket de orden en tiempo real
 ├── context/               # Contextos de React
 │   └── AuthContext.tsx    # Gestión de autenticación y sesión
 ├── pages/                 # Páginas principales de la aplicación
@@ -29,12 +30,14 @@ src/
 │   ├── Home.tsx               # Layout con navegación lateral
 │   ├── ProductManager.tsx     # Gestión de inventario
 │   ├── CategoriesManager.tsx  # Gestión de categorías
-│   ├── SaleRegister.tsx       # Punto de venta
+│   ├── SaleRegister.tsx       # Creación de ventas
+│   ├── UsersManager.tsx       # Manejo de usuarios
 │   └── SalesHistory.tsx       # Historial de ventas
 ├── services/              # Servicios para comunicación con API
 │   ├── auth.service.ts         # Autenticación y registro
 │   ├── product.service.ts      # CRUD de productos
 │   ├── category.service.ts     # CRUD de categorías
+│   ├── user.service.ts         # Gestión de usuarios
 │   └── sale.service.ts         # Gestión de ventas
 ├── types/                 # Definiciones de tipos TypeScript
 │   ├── user.ts           # Tipos de usuario y autenticación
@@ -43,10 +46,11 @@ src/
 │   └── sale.ts           # Tipos de ventas (Sale, SaleItem, SalePayload)
 └── utils/                 # Funciones y utilidades compartidas
     ├── datesLastWeek.ts         # Cálculo de rangos de fechas
+    ├── analytics.ts             # Métricas para gráficos
     └── salesCountLastWeek.ts    # Conteo de ventas por período
 ```
 
-## ✨ Funcionalidades Principales
+## Funcionalidades Principales
 
 ### Gestión de Ventas
 - Registro de ventas con interfaz intuitiva de punto de venta
@@ -54,10 +58,12 @@ src/
 - Ticket de orden que calcula automáticamente subtotales y total
 - Historial de ventas con filtrado por fechas
 - Actualización automática de stock tras cada venta
+- Paginación del historial
 
 ### Administración
 - Gestión completa de productos (CRUD)
 - Gestión de categorías con descripción
+- Gestión de usuarios de parte del Admin
 - Dashboard con información general y métricas
 - Reportes de ventas de la última semana
 
@@ -68,7 +74,7 @@ src/
 - Persistencia de sesión con localStorage
 - Manejo de sesión: Login y logout con actualización de estado global
 
-## 🌐 Servicios API
+## Servicios API
 
 La aplicación utiliza una arquitectura basada en servicios para la comunicación con el backend:
 
@@ -91,7 +97,8 @@ La aplicación utiliza una arquitectura basada en servicios para la comunicació
 - **delete**: Eliminar categoría del sistema
 
 ### SaleService
-- **getAll**: Obtener historial de ventas con filtros opcionales (startDate, endDate)
+- **getAll**: Obtener historial de ventas
+- **getAllFilter**: Obtener historial de ventas con filtros opcionales (startDate, endDate) y paginación
 - **create**: Registrar nueva venta con detalle de productos
 - **getById**: Obtener detalle de una venta específica
 
@@ -101,11 +108,11 @@ Todos los servicios implementan:
 - Validación de respuestas del backend
 - Headers apropiados para cada tipo de petición
 
-## 🎨 Interfaz de Usuario
+## Interfaz de Usuario
 
-El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz moderna y responsive, con componentes optimizados para la experiencia del usuario en punto de venta y administración.
+El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz moderna y responsive, con componentes optimizados para la experiencia del usuario. Y estilos de alertas con react-toastify.
 
-## 🔧 Características Técnicas
+## Características Técnicas
 
 - **TypeScript**: Tipado fuerte con interfaces para todos los modelos de datos
 - **Componentes Protegidos**: Sistema de ProtectedRoute basado en Context API
@@ -115,7 +122,7 @@ El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz
 - **Validación de Datos**: Payloads específicos para creación y actualización
 - **Comunicación API**: Fetch con manejo de tokens de autorización
 
-## 📄 Páginas de la Aplicación
+## Páginas de la Aplicación
 
 ### Autenticación
 - **LoginPage**: Formulario de inicio de sesión con validación de credenciales
@@ -129,7 +136,7 @@ El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz
 
 - **Dashboard**: Panel de control principal
   - Bienvenida personalizada por usuario
-  - Estadísticas de ventas de los últimos 7 días
+  - Gráficos con métricas de ventas y productos vendidos
   - Accesos rápidos a funciones principales
 
 ### Gestión de Productos
@@ -160,7 +167,13 @@ El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz
   - Contador de ventas encontradas
   - Información del vendedor por cada transacción
 
-## 📦 Instalación
+### Gestión de Usuarios
+- **UsersManager**: Punto de venta (POS)
+  - Tabla de usuarios con su información detallada.
+  - Opciónes de modificación y eliminación
+  - Uso restringido solo para Admins
+
+## Instalación
 
 ``` bash
 # Instalar dependencias

@@ -6,7 +6,7 @@ export interface SaleItem {
 }
 
 export interface SaleDetailPayload {
-  product: string; // ID del producto (Ej: "64f1a...")
+  product: string; // ID del producto 
   amountSold: number;
 }
 
@@ -34,10 +34,22 @@ export interface Sale {
 export interface SaleFilterParams {
   startDate?: string; // Formato YYYY-MM-DD
   endDate?: string;   // Formato YYYY-MM-DD 
+  page:number;
+  limit:number;
 }
 
 // Tipos para el estado del formulario de filtros
 export interface FilterState {
   startDate: string;
   endDate: string;
+  page: number;      
+  limit: number;     
+}
+
+// Respuesta esperada del backend con paginación
+export interface PaginatedSalesResponse {
+  sales: Sale[];
+  totalCount: number; 
+  totalPages: number;  
+  currentPage: number;
 }

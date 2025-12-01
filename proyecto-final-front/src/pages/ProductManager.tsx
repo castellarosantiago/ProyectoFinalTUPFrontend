@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import type { Product, ProductPayload } from "../types/product";
 import { ProductService } from "../services/product.service";
 
@@ -86,20 +87,22 @@ export default function ProductsManager() {
     try {
       // Validación simple
       if (!formData.id_category) {
-        alert("Por favor selecciona una categoría");
+        toast.warning("Por favor selecciona una categoría");
         return;
       }
 
       if (currentProduct) {
         await ProductService.update(currentProduct._id, formData);
+        toast.success("Producto actualizado correctamente");
       } else {
         await ProductService.create(formData);
+        toast.success("Producto creado correctamente");
       }
       setIsModalOpen(false);
       loadData(); // recargamos los datos
     } catch (error) {
       console.error(error);
-      alert("Ocurrió un error al guardar");
+      toast.error("Ocurrió un error al guardar");
     }
   };
 
@@ -109,14 +112,15 @@ export default function ProductsManager() {
     try {
       await ProductService.delete(id);
       setProducts(products.filter((p) => p._id !== id));
+      toast.success("Producto eliminado correctamente");
     } catch (error) {
       console.error(error);
-      alert("Error al eliminar");
+      toast.error("Error al eliminar el producto");
     }
   };
 
   return (
-    <div className="max-w-6xl w-full">
+    <div className="max-w-6xl w-full mx-auto">
       {/* encabezado y buscador */}
       <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4 border-b border-base-300 pb-6">
         <div>
