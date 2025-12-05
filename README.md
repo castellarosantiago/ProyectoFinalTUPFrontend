@@ -16,10 +16,11 @@ Frontend de la aplicación SIGN, un sistema completo para la gestión integral d
 src/
 ├── App.tsx                 # Configuración principal y rutas
 ├── components/             # Componentes reutilizables
+│   ├── AdminRoute.tsx        # Protección de rutas por rol Admin
+│   ├── ProtectedRoute.tsx    # HOC para protección de rutas
 │   └── sale/              # Componentes del módulo de ventas
 │       ├── InventoryPanel.tsx    # Panel de inventario con búsqueda
-│       ├── OrderTicket.tsx       # Ticket de orden en tiempo real
-│       └── ProtectedRoute.tsx    # HOC para protección de rutas
+│       └── OrderTicket.tsx       # Ticket de orden en tiempo real
 ├── context/               # Contextos de React
 │   └── AuthContext.tsx    # Gestión de autenticación y sesión
 ├── pages/                 # Páginas principales de la aplicación
@@ -27,14 +28,17 @@ src/
 │   ├── LoginPage.tsx          # Inicio de sesión
 │   ├── RegisterPage.tsx       # Registro de usuarios
 │   ├── Home.tsx               # Layout con navegación lateral
+│   ├── ProfilePage.tsx        # Gestión de perfil de usuario
 │   ├── ProductManager.tsx     # Gestión de inventario
 │   ├── CategoriesManager.tsx  # Gestión de categorías
-│   ├── SaleRegister.tsx       # Punto de venta
+│   ├── SaleRegister.tsx       # Creación de ventas
+│   ├── UsersManager.tsx       # Manejo de usuarios
 │   └── SalesHistory.tsx       # Historial de ventas
 ├── services/              # Servicios para comunicación con API
 │   ├── auth.service.ts         # Autenticación y registro
 │   ├── product.service.ts      # CRUD de productos
 │   ├── category.service.ts     # CRUD de categorías
+│   ├── user.service.ts         # Gestión de usuarios
 │   └── sale.service.ts         # Gestión de ventas
 ├── types/                 # Definiciones de tipos TypeScript
 │   ├── user.ts           # Tipos de usuario y autenticación
@@ -43,6 +47,7 @@ src/
 │   └── sale.ts           # Tipos de ventas (Sale, SaleItem, SalePayload)
 └── utils/                 # Funciones y utilidades compartidas
     ├── datesLastWeek.ts         # Cálculo de rangos de fechas
+    ├── analytics.ts             # Métricas para gráficos
     └── salesCountLastWeek.ts    # Conteo de ventas por período
 ```
 
@@ -54,12 +59,20 @@ src/
 - Ticket de orden que calcula automáticamente subtotales y total
 - Historial de ventas con filtrado por fechas
 - Actualización automática de stock tras cada venta
+- Paginación del historial
+- Generación de reportes en PDF desde el Dashboard
 
 ### Administración
 - Gestión completa de productos (CRUD)
 - Gestión de categorías con descripción
+- Gestión de usuarios de parte del Admin
 - Dashboard con información general y métricas
 - Reportes de ventas de la última semana
+
+### Gestión de Perfil
+- Edición de datos personales (nombre y email)
+- Cambio de contraseña de forma segura
+- Reautenticación automática después de actualizar datos
 
 ### Autenticación y Seguridad
 - Sistema de login con autenticación JWT
@@ -91,7 +104,8 @@ La aplicación utiliza una arquitectura basada en servicios para la comunicació
 - **delete**: Eliminar categoría del sistema
 
 ### SaleService
-- **getAll**: Obtener historial de ventas con filtros opcionales (startDate, endDate)
+- **getAll**: Obtener historial de ventas
+- **getAllFilter**: Obtener historial de ventas con filtros opcionales (startDate, endDate) y paginación
 - **create**: Registrar nueva venta con detalle de productos
 - **getById**: Obtener detalle de una venta específica
 
@@ -103,7 +117,7 @@ Todos los servicios implementan:
 
 ## Interfaz de Usuario
 
-El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz moderna y responsive, con componentes optimizados para la experiencia del usuario en punto de venta y administración.
+El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz moderna y responsive, con componentes optimizados para la experiencia del usuario. Y estilos de alertas con react-toastify.
 
 ## Características Técnicas
 
@@ -114,6 +128,7 @@ El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz
 - **Filtros Avanzados**: Sistema de filtrado de ventas por rango de fechas
 - **Validación de Datos**: Payloads específicos para creación y actualización
 - **Comunicación API**: Fetch con manejo de tokens de autorización
+- **Generación de PDF**: Capacidad para generar reportes en formato PDF
 
 ## Páginas de la Aplicación
 
@@ -126,11 +141,13 @@ El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz
   - Menú lateral con acceso a todas las secciones
   - Información del usuario actual
   - Opción de cerrar sesión
+  - Acceso a perfil de usuario
 
 - **Dashboard**: Panel de control principal
   - Bienvenida personalizada por usuario
-  - Estadísticas de ventas de los últimos 7 días
+  - Gráficos con métricas de ventas y productos vendidos
   - Accesos rápidos a funciones principales
+  - Generación de reportes en PDF
 
 ### Gestión de Productos
 - **ProductManager**: Administración completa del inventario
@@ -160,6 +177,19 @@ El sistema utiliza DaisyUI junto con Tailwind CSS para proporcionar una interfaz
   - Contador de ventas encontradas
   - Información del vendedor por cada transacción
 
+### Gestión de Usuarios
+- **UsersManager**: Administración de usuarios (Solo Admins)
+  - Tabla de usuarios con su información detallada
+  - Opciones de modificación y eliminación
+  - Uso restringido solo para Admins
+
+- **ProfilePage**: Gestión de perfil personal
+  - Edición de nombre completo y email
+  - Cambio de contraseña con confirmación
+  - Validación de contraseñas coincidentes
+  - Reautenticación automática tras actualización
+  - Formulario protegido con autenticación JWT
+
 ## Instalación
 
 ``` bash
@@ -168,5 +198,3 @@ npm install
 
 # Iniciar en modo desarrollo
 npm run dev
-```
-

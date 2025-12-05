@@ -14,16 +14,13 @@ export const ProductService = {
   // obtenet todos los productos
   getAll: async (): Promise<Product[]> => { // retorna una promesa con el array de productos
     const token = getAuthToken();
-    console.log('[ProductService.getAll] Fetching products with token:', !!token);
     const res = await fetch(API_URL, {
       headers: token ? { 'Authorization': token } : {},
     });
     if (!res.ok) {
-      console.error('[ProductService.getAll] Error:', res.status, res.statusText);
       throw new Error(`Error al obtener productos (${res.status})`);
     }
     const data = await res.json();
-    console.log('[ProductService.getAll] Success:', data);
     return data;
   },
 
@@ -32,7 +29,6 @@ export const ProductService = {
     if (!name.trim()) return ProductService.getAll();
     
     const token = getAuthToken();
-    console.log('[ProductService.searchByName] Searching:', name, 'with token:', !!token);
     const res = await fetch(`${API_URL}/search/name?name=${name}`, {
       headers: token ? { 'Authorization': token } : {},
     });
@@ -49,7 +45,6 @@ export const ProductService = {
   //crear
   create: async (payload: ProductPayload): Promise<Product> => { // recibe los datos limpios sin el id
     const token = getAuthToken();
-    console.log('[ProductService.create] Creating product with token:', !!token);
     const res = await fetch(API_URL, {
       method: "POST",
       headers: { 
@@ -66,7 +61,6 @@ export const ProductService = {
   // actualizar
   update: async (id: string, payload: Partial<ProductPayload>): Promise<Product> => { // recibe el id para saber cual actualizar y los datos nuevos sin el id
     const token = getAuthToken();
-    console.log('[ProductService.update] Updating product with token:', !!token);
     const res = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
       headers: { 
@@ -83,7 +77,6 @@ export const ProductService = {
   // eliminar
   delete: async (id: string): Promise<void> => { // recibe el id del producto a eliminar
     const token = getAuthToken();
-    console.log('[ProductService.delete] Deleting product with token:', !!token);
     const res = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
       headers: token ? { 'Authorization': token } : {},
@@ -95,7 +88,6 @@ export const ProductService = {
   getCategoriesForDropdown: async (): Promise<{_id: string, name: string}[]> => { // retorna un array de categorías con solo id y name
     try {
       const token = getAuthToken();
-      console.log('[ProductService.getCategoriesForDropdown] Fetching with token:', !!token);
       const res = await fetch(CAT_API_URL, {
         headers: token ? { 'Authorization': token } : {},
       });
