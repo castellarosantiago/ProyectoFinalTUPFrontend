@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
+import { API_BASE_URL } from '../config/api';
 
 export default function ProfilePage() {
     const { user, logout } = useAuth();
@@ -31,7 +32,7 @@ export default function ProfilePage() {
         try {
             setLoading(true);
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/users/profile', {
+            const response = await fetch(`${API_BASE_URL}/api/users/profile`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

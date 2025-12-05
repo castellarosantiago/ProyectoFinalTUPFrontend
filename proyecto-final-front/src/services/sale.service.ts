@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Sale, SalePayload, FilterState, PaginatedSalesResponse } from "../types/sale"; 
+import { API_BASE_URL } from "../config/api";
 
 const API_URL = `${API_BASE_URL}/api/sales`;
 

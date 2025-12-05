@@ -15,6 +15,7 @@ import {
 import type { Sale } from '../types/sale';
 import { SaleService } from '../services/sale.service';
 import { groupSalesByDate, getTopProducts, getSalesLastWeek } from '../utils/analytics'; // calculos matemáticos
+import { API_BASE_URL } from '../config/api';
 
 export default function SalesDashboard() {
   const { user } = useAuth(); // datos del usuario logeado
@@ -82,7 +83,7 @@ export default function SalesDashboard() {
             onClick={async () => {
               try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('http://localhost:5000/api/sales/report', {
+                const response = await fetch(`${API_BASE_URL}/api/sales/report`, {
                   headers: {
                     'Authorization': `Bearer ${token}`
                   }

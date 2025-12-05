@@ -1,7 +1,8 @@
 import type { UserGet } from "../types/user";
 import type { UserUpdatePayload } from "../types/user";
+import { API_BASE_URL } from "../config/api";
 
-const API_URL = "http://localhost:5000/api/users";
+const API_URL = `${API_BASE_URL}/api/users`;
 
 const getAuthToken = () => {
   const token = localStorage.getItem('token');
