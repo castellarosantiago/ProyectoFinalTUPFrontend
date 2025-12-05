@@ -1,7 +1,8 @@
 import type { Product, ProductPayload } from "../types/product";
+import { API_BASE_URL } from "../config/api";
 
-const API_URL = "http://localhost:5000/api/products";
-const CAT_API_URL = "http://localhost:5000/api/categories";
+const API_URL = `${API_BASE_URL}/api/products`;
+const CAT_API_URL = `${API_BASE_URL}/api/categories`;
 
 // Helper para obtener el token del localStorage
 const getAuthToken = () => {

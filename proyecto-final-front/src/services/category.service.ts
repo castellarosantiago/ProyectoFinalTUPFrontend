@@ -1,6 +1,7 @@
 import type { Category, CategoryPayload } from "../types/category";
+import { API_BASE_URL } from "../config/api";
 
-const API_URL = "http://localhost:5000/api/categories";
+const API_URL = `${API_BASE_URL}/api/categories`;
 
 // Helper para obtener el token del localStorage
 const getAuthToken = () => {

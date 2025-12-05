@@ -1,7 +1,8 @@
 import type { Sale, SalePayload } from "../types/sale";
 import type { SaleFilterParams } from "../types/sale";
+import { API_BASE_URL } from "../config/api";
 
-const API_URL = "http://localhost:5000/api/sales";
+const API_URL = `${API_BASE_URL}/api/sales`;
 
 // Helper para obtener el token del localStorage
 const getAuthToken = () => {
